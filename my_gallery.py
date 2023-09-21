@@ -1,8 +1,5 @@
-import glob
-import os
-import sys
-
-
+import random
+import time
 import carla
 
 
@@ -15,7 +12,7 @@ def main():
 # Once we have a client we can retrieve the world that is currently
 # running.
   world = client.load_world('Town04')
-
+#  env = client.get_world()
 #  spectator = world.get_spectator()
   blueprint_library = world.get_blueprint_library()
   blueprint = blueprint_library.find('vehicle.carlamotors.carlacola')
@@ -26,10 +23,23 @@ def main():
   transform = random.choice(world.get_map().get_spawn_points())
 
   vehicle = world.spawn_actor(blueprint, transform)
+  vehicle.set_autopilot(True)
+  #sleep(3)
+
+#  Sticking the spectator to the vehicle
+  spectator = world.get_spectator()
+#spectator = world.spawn_actor(blueprint, transform, attach_to=my_vehicle)
+#Ne fonctionne pas car spectator est un actor spécifique (pas de blueprint)
+
+
+  while True:
+    
+    spectator.set_transform(vehicle.get_transform())
+    #time.sleep(0.01)
 
 
 
-  vehicle.destroy()
+#  vehicle.destroy()
 
 
 if __name__ == '__main__':
