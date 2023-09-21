@@ -33,13 +33,23 @@ def main():
 
 
   while True:
-    
-    spectator.set_transform(vehicle.get_transform())
-    #time.sleep(0.01)
+
+    vehicle_location = vehicle.get_location()
+    hauteur = 10.0
+    spectator_location = vehicle_location + carla.Vector3D(0, 0, hauteur)
+
+    vehicle_rotation = vehicle.get_transform().rotation
+    spectator_rotation = carla.Rotation(pitch = vehicle_rotation.pitch -90.0, yaw = vehicle_rotation.yaw, roll = vehicle_rotation.roll)
+
+    new_transform = carla.Transform(spectator_location, spectator_rotation)
+
+    spectator.set_transform(new_transform)
+
+    time.sleep(0.01)
 
 
 
-#  vehicle.destroy()
+  # vehicle.destroy()
 
 
 if __name__ == '__main__':
