@@ -36,64 +36,20 @@ def main():
 
 
   while True:
-    recul = 10.0
-    hauteur = 7.0
+    recul = -10.0
+    hauteur = -7.0
 
     vehicle_transform = vehicle.get_transform()
     vehicle_location = vehicle.get_location()
-    forward_vector = vehicle_transform.get_forward_vector()
-    up_vector = vehicle_transform.get_up_vector()
     
-    spectator_location = vehicle_location - forward_vector*recul - up_vector*hauteur
-    vehicle_rotation = vehicle.get_transform().rotation
+    spec_local_vec = carla.Vector3D(-10, 0, 5)
+    spectator_location = vehicle_transform.transform(carla.Location(spec_local_vec))
 
+    vehicle_rotation = vehicle.get_transform().rotation
     spectator_rotation = carla.Rotation(pitch = vehicle_rotation.pitch, yaw = vehicle_rotation.yaw, roll = vehicle_rotation.roll)
+
     new_transform = carla.Transform(spectator_location, spectator_rotation)
     spectator.set_transform(new_transform)
-
-
-    # print(vehicle_matrix)
-
-    # spectator_transform = vehicle_transform.transform(carla.Location(x= 0.0, y = 0.0, z = recul), vehicle_rotation)
-    # spectator.set_transform(spectator_transform)
-
-    # forward_vector = vehicle_transform.get_forward_vector()
-    # print(forward_vector)
-    
-    # right_vector = vehicle_transform.get_right_vector()
-    # # print(right_vector)
-    # up_vector = vehicle_transform.get_up_vector()
-    # # print(up_vector)
-    # spectator_vector = carla.Vector3D(x = forward_vector.x -recul)
-    # spectator_location = forward_vector.transform(spectator_vector)
-
-    # print("Avant transform", vehicle_transform)
-    # vehicle_transform.transform(spectator.get_location())
-    # print(vehicle_transform)
-    # print("Apres transform", vehicle_transform)
-    # camera_transform = carla.Transform(vehicle_transform)
-    #spectator_rotation = vehicle.get_transform().rotation
-    # camera_local_location = carla.Location(x=-7.0,y=0.0,z=0.0)
-    # camera_transform.set_location()
-    # camera_transform.transform(camera_local_location)
-    # spectator.set_transform(spectator_transform)
-
-   # print(vehicle_transform.get_matrix())
-    
-
-    
-     #This is still not a local referential fixed on on the vehicle, but a global referential
-    # hauteur = 7.0
-    # recul = -7.0
-    
-#     spectator_location = vehicle_location + carla.Vector3D(0,recul , hauteur)
-
-#     vehicle_rotation = vehicle.get_transform().rotation
-#     spectator_rotation = carla.Rotation(pitch = vehicle_rotation.pitch -45.0, yaw = vehicle_rotation.yaw, roll = vehicle_rotation.roll)
-# #
-#     new_transform = carla.Transform(spectator_location, spectator_rotation)
-
-#     spectator.set_transform(new_transform)
 
     time.sleep(0.01)
 
