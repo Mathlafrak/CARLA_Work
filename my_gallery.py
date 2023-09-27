@@ -41,7 +41,18 @@ def main():
 
     vehicle_transform = vehicle.get_transform()
     vehicle_location = vehicle.get_location()
-    
+
+    vehicle_matrix = vehicle_transform.get_matrix()
+    for lignes in vehicle_matrix:
+      print(lignes, "\n")
+    up_vector = vehicle_transform.get_up_vector()
+    forward_vector = vehicle_transform.get_forward_vector()
+    right_vector = vehicle_transform.get_right_vector()
+
+    # print(vehicle_matrix)
+    print("Forward vector", forward_vector, "\n", "Right vector", right_vector  , "\n","Up vector", up_vector)
+    #Dans la matrice de rotation, la première colonne correspond au vecteur forward, la deuxième le vecteur right, et la troisème le vecteur up 
+
     spec_local_vec = carla.Vector3D(-10, 0, 5)
     spectator_location = vehicle_transform.transform(carla.Location(spec_local_vec))
 
