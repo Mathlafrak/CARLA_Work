@@ -1,6 +1,8 @@
 import random
 import time
 import carla
+import numpy as np 
+import math
 
 
 def main():
@@ -42,6 +44,16 @@ def main():
     vehicle_transform = vehicle.get_transform()
     vehicle_location = vehicle.get_location()
 
+    spec_local_vec = carla.Vector3D(-10, 0, 5)
+    spectator_location = vehicle_transform.transform(carla.Location(spec_local_vec))
+
+    vehicle_rotation = vehicle.get_transform().rotation
+    spectator_rotation = carla.Rotation(pitch = vehicle_rotation.pitch, yaw = vehicle_rotation.yaw, roll = vehicle_rotation.roll)
+
+    new_transform = carla.Transform(spectator_location, spectator_rotation)
+    spectator.set_transform(new_transform)
+
+
     vehicle_matrix = vehicle_transform.get_matrix()
     for lignes in vehicle_matrix:
       print(lignes, "\n")
@@ -51,16 +63,17 @@ def main():
 
     # print(vehicle_matrix)
     print("Forward vector", forward_vector, "\n", "Right vector", right_vector  , "\n","Up vector", up_vector)
-    #Dans la matrice de rotation, la première colonne correspond au vecteur forward, la deuxième le vecteur right, et la troisème le vecteur up 
+    pitch = vehicle_rotation.pitch
+    roll = vehicle_rotation.roll
+    yaw = vehicle_rotation.yaw
 
-    spec_local_vec = carla.Vector3D(-10, 0, 5)
-    spectator_location = vehicle_transform.transform(carla.Location(spec_local_vec))
+    matrice_pitch = np.array([[1, 0, 0],[0, math.cos(pitch), -math.sin(pitch)],[0, math.sin(pitch), math.cos(pitch)]])
+    matrice_roll = np.array([[math.cos(roll), 0, math.sin(roll)],[0, 1, 0],[-math.sin(roll), 0, math.cos(roll)]])
+    matrice_yaw = np.array([[math.cos(yaw), -math.sin(yaw), 0],[math.sin(yaw), math.cos(yaw), 0],[0, 0, 1]])
 
-    vehicle_rotation = vehicle.get_transform().rotation
-    spectator_rotation = carla.Rotation(pitch = vehicle_rotation.pitch, yaw = vehicle_rotation.yaw, roll = vehicle_rotation.roll)
+    rotation_matrix = np.dot(matrice_yaw,np.dot(matrice_pitch, matrice_roll))
+    print("Matrice de rotation : ",rotation_matrix)
 
-    new_transform = carla.Transform(spectator_location, spectator_rotation)
-    spectator.set_transform(new_transform)
 
     time.sleep(0.01)
 
