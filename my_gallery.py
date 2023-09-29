@@ -63,13 +63,13 @@ def main():
 
     # print(vehicle_matrix)
     print("Forward vector", forward_vector, "\n", "Right vector", right_vector  , "\n","Up vector", up_vector)
-    pitch = vehicle_rotation.pitch
-    roll = vehicle_rotation.roll
-    yaw = vehicle_rotation.yaw
+    pitch = math.radians(vehicle_rotation.pitch)
+    roll = math.radians(vehicle_rotation.roll)
+    yaw = math.radians(vehicle_rotation.yaw)
 
-    matrice_pitch = np.array([[1, 0, 0],[0, math.cos(pitch), -math.sin(pitch)],[0, math.sin(pitch), math.cos(pitch)]])
-    matrice_roll = np.array([[math.cos(roll), 0, math.sin(roll)],[0, 1, 0],[-math.sin(roll), 0, math.cos(roll)]])
-    matrice_yaw = np.array([[math.cos(yaw), -math.sin(yaw), 0],[math.sin(yaw), math.cos(yaw), 0],[0, 0, 1]])
+    matrice_roll = np.array([[1, 0, 0],[0, math.cos(roll), math.sin(roll)],[0, -math.sin(roll), math.cos(roll)]])
+    matrice_pitch = np.array([[math.cos(pitch), 0, -math.sin(pitch)],[0, 1, 0],[math.sin(pitch), 0, math.cos(pitch)]])
+    matrice_yaw = np.array([[math.cos(yaw), math.sin(yaw), 0],[-math.sin(yaw), math.cos(yaw), 0],[0, 0, 1]])
 
     rotation_matrix = np.dot(matrice_yaw,np.dot(matrice_pitch, matrice_roll))
     print("Matrice de rotation : ",rotation_matrix)
