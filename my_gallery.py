@@ -65,7 +65,7 @@ def main():
     print("Forward vector", forward_vector, "\n", "Right vector", right_vector  , "\n","Up vector", up_vector)
     pitch = math.radians(vehicle_rotation.pitch)
     roll = math.radians(vehicle_rotation.roll)
-    yaw = math.radians(vehicle_rotation.yaw)
+    yaw = math.radians(vehicle_rotation.yaw)  
 
     matrice_roll = np.array([[1, 0, 0],[0, math.cos(roll), math.sin(roll)],[0, -math.sin(roll), math.cos(roll)]])
     matrice_pitch = np.array([[math.cos(pitch), 0, -math.sin(pitch)],[0, 1, 0],[math.sin(pitch), 0, math.cos(pitch)]])
@@ -73,6 +73,16 @@ def main():
 
     rotation_matrix = np.dot(matrice_yaw,np.dot(matrice_pitch, matrice_roll))
     print("Matrice de rotation : ",rotation_matrix)
+
+    # forward_velocity = forward_vector.get_velocity()
+    # up_velocity = up_vector.get_velocity()
+    # right_velocity = right_vector.get_velocity()
+    velocity = vehicle.get_velocity()
+    Vx = velocity.x
+    Vy = velocity.y
+    Vz = velocity.z
+    print("Vx = ",Vx, "Vy = ", Vy, "Vz = ", Vz)
+    # print("Forward speed is : ", forward_velocity,"\n", "Up velocity is : ", up_velocity, "\n", "Right velocity is :", right_velocity)
 
 
     time.sleep(0.01)
